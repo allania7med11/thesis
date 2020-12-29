@@ -128,7 +128,6 @@ export default {
   methods: {
     async initialize() {
       const products = await this.$axios.$get("/api/products");
-      console.log({ products });
       this.products = products;
     },
 
@@ -165,11 +164,13 @@ export default {
       });
     },
 
-    save() {
+    async save() {
       if (this.editedIndex > -1) {
         Object.assign(this.products[this.editedIndex], this.editedItem);
       } else {
-        this.products.push(this.editedItem);
+        //this.products.push(this.editedItem);
+        await this.$axios.$post("/api/products", this.editedItem);
+        await this.initialize();
       }
       this.close();
     },
