@@ -126,24 +126,10 @@ export default {
   },
 
   methods: {
-    initialize() {
-      this.products = [
-        {
-          name: "pr1",
-          price: 10,
-          description: "description1",
-        },
-        {
-          name: "pr2",
-          price: 20,
-          description: "description2",
-        },
-        {
-          name: "pr3",
-          price: 50,
-          description: "description3",
-        },
-      ];
+    async initialize() {
+      const products = await this.$axios.$get("/api/products");
+      console.log({ products });
+      this.products = products;
     },
 
     editItem(item) {
