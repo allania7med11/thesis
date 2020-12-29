@@ -143,8 +143,9 @@ export default {
       this.dialogDelete = true;
     },
 
-    deleteItemConfirm() {
-      this.products.splice(this.editedIndex, 1);
+    async deleteItemConfirm() {
+      await this.$axios.$delete(`/api/products/${this.editedItem._id}`);
+      await this.initialize();
       this.closeDelete();
     },
 
