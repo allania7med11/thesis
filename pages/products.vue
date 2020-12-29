@@ -167,8 +167,9 @@ export default {
     async save() {
       if (this.editedIndex > -1) {
         Object.assign(this.products[this.editedIndex], this.editedItem);
+        await this.$axios.$put(`/api/products/${this.editedItem._id}`, this.editedItem);
+        await this.initialize();
       } else {
-        //this.products.push(this.editedItem);
         await this.$axios.$post("/api/products", this.editedItem);
         await this.initialize();
       }
