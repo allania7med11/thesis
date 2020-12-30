@@ -27,6 +27,9 @@ app.use(
     saveUninitialized: false,
   })
 );
+app.use(passport.initialize()); //add this
+app.use(passport.session()); //add this
+
 app.get("/user", (req, res) => {
   console.log({ user: req.user });
   res.json({ user: req.user });
@@ -37,6 +40,7 @@ app.post("/login", passport.authenticate("local"), function(req, res) {
   res.json({ user: req.user });
 });
 app.post("/register", checkNotAuthenticated, async (req, res) => {
+  debugger
   let { username, email, password } = req.body;
   try {
     user = await User.save({ username, email, password });
