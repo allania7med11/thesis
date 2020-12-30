@@ -7,15 +7,11 @@
 </template>
 
 <script>
+import { mapState, mapGetters } from "vuex"
 export default {
 computed:{
-  count:function(){
-    return this.$store.state.count
-  },
-  count2x:function(){
-    return this.$store.getters.count2x
-  }
-
+  ...mapState(["count","count2x"]),
+  ...mapGetters(["count2x"])
 }
 }
 </script>

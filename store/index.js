@@ -14,3 +14,9 @@ export const mutations = {
     state.count += n;
   }
 };
+
+export const actions = {
+  increment({ commit }, n) {
+    commit("increment", n)
+  }
+}
