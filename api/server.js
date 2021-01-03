@@ -1,14 +1,10 @@
-const port = process.env.PORT || 3000
-const isProd = process.env.NODE_ENV === 'production'
+const port = process.env.PORT || 3000;
+const isProd = process.env.NODE_ENV === "production";
 
-const http = require('http')
-const app = require('express')()
-app.get('/api', (req, res) => {
-    res.send('Hello World!')
-  })
-const server = http.createServer(app)
-const io = require('socket.io')(server)
-
+const app = require("express")();
+app.get("/api", (req, res) => {
+  res.send("Hello World!");
+});
 const { Nuxt, Builder } = require('nuxt')
 // We instantiate Nuxt with the options
 const config = require('../nuxt.config.js')
@@ -21,19 +17,28 @@ if (config.dev) {
   builder.build()
 }
 app.use(nuxt.render)
+var http = require("http").createServer(app);
+var io = require("socket.io")(http, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"]
+  }
+});
+io.on("connection", socket => {
+  console.log("made socket connection", socket.id);
 
-// Listen the server
-server.listen(port, '0.0.0.0')
-console.log('Server listening on localhost:' + port) // eslint-disable-line no-console
+  // Handle chat event
+  socket.on("chat", function(data) {
+    // console.log(data);
+    io.sockets.emit("chat", data);
+  });
 
-// Socket.io
-const messages = []
-io.on('connection', (socket) => {
-  socket.on('last-messages', function (fn) {
-    fn(messages.slice(-50))
-  })
-  socket.on('send-message', function (message) {
-    messages.push(message)
-    socket.broadcast.emit('new-message', message)
-  })
-})
+  // Handle typing event
+  socket.on("typing", function(data) {
+    socket.broadcast.emit("typing", data);
+  });
+});
+
+http.listen(port, () => {
+  console.log(`listening on *:${port}`);
+});
