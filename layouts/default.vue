@@ -117,6 +117,15 @@ export default {
       rightDrawer: false,
       title: 'Vuetify.js'
     }
-  }
+  },
+  created() {
+    this.initialize();
+  },
+  methods: {
+    async initialize() {
+      const user = await this.$axios.$get("/api/user");
+      console.log({user})
+    },
+  },
 }
 </script>
