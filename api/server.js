@@ -1,10 +1,8 @@
 const port = process.env.PORT || 3000;
 const isProd = process.env.NODE_ENV === "production";
 
-const app = require("express")();
-app.get("/api", (req, res) => {
-  res.send("Hello World!");
-});
+const app = require("./index");
+
 const { Nuxt, Builder } = require('nuxt')
 // We instantiate Nuxt with the options
 const config = require('../nuxt.config.js')
